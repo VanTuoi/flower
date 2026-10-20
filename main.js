@@ -23,8 +23,6 @@
     personalizeForm: document.querySelector("#personalizeForm"),
     recipientInput: document.querySelector("#recipientInput"),
     senderInput: document.querySelector("#senderInput"),
-    shareButton: document.querySelector("#shareButton"),
-    replayButton: document.querySelector("#replayButton"),
     toast: document.querySelector("#toast"),
     canvas: document.querySelector("#petalCanvas"),
   };
@@ -413,53 +411,6 @@
     }, prefersReducedMotion.matches ? 0 : 780);
   }
 
-  function replayBloom() {
-    if (!ENABLE_FLOWER_EFFECTS) return;
-    playChime();
-    petalField.burst(
-      window.innerWidth / 2,
-      window.innerHeight * 0.58,
-      window.innerWidth < 640 ? 12 : 24,
-    );
-    showToast("Một cơn mưa hoa dành tặng bạn");
-  }
-
-  function legacyCopy(text) {
-    const area = document.createElement("textarea");
-    area.value = text;
-    area.setAttribute("readonly", "");
-    area.style.position = "fixed";
-    area.style.opacity = "0";
-    document.body.append(area);
-    area.select();
-    const copied = document.execCommand("copy");
-    area.remove();
-    return copied;
-  }
-
-  async function shareGreeting() {
-    const title = `Lời chúc 20/10 dành tặng ${state.recipient}`;
-    const text = `Chúc ${state.recipient} một ngày 20/10 thật rực rỡ, bình an và hạnh phúc!`;
-    const shareData = { title, text, url: window.location.href };
-
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-        return;
-      } catch (error) {
-        if (error && error.name === "AbortError") return;
-      }
-    }
-
-    const content = `${text}\n${window.location.href}`;
-    try {
-      await navigator.clipboard.writeText(content);
-      showToast("Đã sao chép đường dẫn lời chúc");
-    } catch {
-      showToast(legacyCopy(content) ? "Đã sao chép đường dẫn lời chúc" : "Không thể sao chép trên trình duyệt này");
-    }
-  }
-
   function setupRevealObserver() {
     const targets = document.querySelectorAll(".reveal-on-scroll");
     if (!("IntersectionObserver" in window) || prefersReducedMotion.matches) {
@@ -481,9 +432,6 @@
 
   elements.openGift.addEventListener("click", openGift);
   elements.soundToggle.addEventListener("click", () => setSound(!state.soundEnabled));
-  elements.replayButton.addEventListener("click", replayBloom);
-  elements.shareButton.addEventListener("click", shareGreeting);
-
   if (ENABLE_PERSONALIZATION) {
     elements.personalizeButton.hidden = false;
     elements.personalizeDialog.hidden = false;
@@ -541,7 +489,6 @@
     body.classList.add("flowers-disabled");
     document.querySelector(".garden").hidden = true;
     elements.canvas.hidden = true;
-    elements.replayButton.hidden = true;
     elements.openGift.querySelector("span").textContent = "Chạm để mở lời chúc";
     document.querySelector(".intro__note").textContent = "Một lời chúc nhỏ đang chờ được mở.";
   }
