@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="vi" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#071512" />
+    <meta
+      name="description"
+      content="Một khu vườn nhỏ và lời chúc dịu dàng dành tặng Ngày Phụ nữ Việt Nam 20/10."
+    />
+    <title>20/10 — Một khu vườn dành tặng bạn</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playwrite+VN:wght@100..400&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      document.documentElement.classList.remove("no-js");
+      document.documentElement.classList.add("js");
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js" defer></script>
+    <script src="main.js" defer></script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#letter">Đi tới lời chúc</a>
+
+    <canvas id="petalCanvas" class="petal-canvas" aria-hidden="true"></canvas>
+    <div class="ambient" aria-hidden="true">
+      <span class="ambient__orb ambient__orb--one"></span>
+      <span class="ambient__orb ambient__orb--two"></span>
+      <span class="ambient__orb ambient__orb--three"></span>
+      <span class="ambient__grain"></span>
+    </div>
+
+    <div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="introTitle">
+      <div class="intro__halo" aria-hidden="true"></div>
+      <div class="intro__content">
+        <span class="intro__seal" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img">
+            <path d="M32 52C19 43 10 34 10 23a11 11 0 0 1 20-6 11 11 0 0 1 20 6c0 11-9 20-18 29Z" />
+            <path d="M32 45V20m0 8c-7-7-13-4-14 1 6 1 10 2 14 7m0-8c7-7 13-4 14 1-6 1-10 2-14 7" />
+          </svg>
+        </span>
+        <p class="eyebrow">20 tháng 10</p>
+        <h1 id="introTitle">Một khu vườn nhỏ<br /><em>đang chờ <span data-recipient>bạn</span></em></h1>
+        <p class="intro__note">Hãy chạm nhẹ để những bông hoa bắt đầu nở.</p>
+        <button class="open-button" id="openGift" type="button">
+          <span>Chạm để hoa nở</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14m-5-5 5 5-5 5" />
+          </svg>
+        </button>
+        <p class="intro__hint">Âm thanh dịu nhẹ sẽ được bật</p>
+      </div>
+    </div>
+
+    <header class="toolbar" aria-label="Điều khiển trang">
+      <button class="icon-button" id="soundToggle" type="button" aria-label="Tắt âm thanh" aria-pressed="true">
+        <svg class="icon-button__sound-on" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 9v6h4l5 4V5L9 9H5Z" />
+          <path d="M17 9c1.2 1.4 1.2 4.6 0 6m2-9c3 3.2 3 8.8 0 12" />
+        </svg>
+        <svg class="icon-button__sound-off" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 9v6h4l5 4V5L9 9H5Z" />
+          <path d="m18 10 4 4m0-4-4 4" />
+        </svg>
+      </button>
+      <button class="icon-button" id="personalizeButton" type="button" aria-label="Cá nhân hóa lời chúc">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 20h9" />
+          <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z" />
+        </svg>
+      </button>
+    </header>
+
+    <main id="mainContent">
+      <section class="hero" aria-labelledby="heroTitle">
+        <div class="hero__copy">
+          <p class="date-mark"><span>Ngày</span><strong>20 · 10</strong></p>
+          <p class="eyebrow">Dành tặng <span data-recipient>bạn</span></p>
+          <h2 id="heroTitle">Chúc mừng<br /><em>Ngày Phụ nữ <span class="hero-title__country">Việt Nam</span></em></h2>
+          <p class="hero__lead">
+            <span data-recipient-cap>Bạn</span> không cần trở thành phiên bản của bất kỳ ai. Cứ dịu dàng khi muốn,
+            mạnh mẽ khi cần và luôn tự hào về hành trình của riêng mình.
+          </p>
+        </div>
+
+        <div class="garden" aria-hidden="true">
+          <div class="garden__glow"></div>
+          <svg class="bouquet" viewBox="0 0 640 600" role="presentation">
+            <defs>
+              <radialGradient id="petalPink" cx="45%" cy="35%" r="70%">
+                <stop offset="0" stop-color="#fff6f4" />
+                <stop offset=".38" stop-color="#ffb9bf" />
+                <stop offset="1" stop-color="#cc5578" />
+              </radialGradient>
+              <radialGradient id="petalPeach" cx="45%" cy="35%" r="70%">
+                <stop offset="0" stop-color="#fff8e8" />
+                <stop offset=".4" stop-color="#ffc9a8" />
+                <stop offset="1" stop-color="#e47772" />
+              </radialGradient>
+              <radialGradient id="petalIvory" cx="45%" cy="35%" r="70%">
+                <stop offset="0" stop-color="#fffdf2" />
+                <stop offset=".55" stop-color="#f8e4bd" />
+                <stop offset="1" stop-color="#d9aa75" />
+              </radialGradient>
+              <linearGradient id="stemGreen" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#9cd69b" />
+                <stop offset="1" stop-color="#285f50" />
+              </linearGradient>
+              <linearGradient id="leafGreen" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#b8d99b" />
+                <stop offset=".48" stop-color="#4d8b68" />
+                <stop offset="1" stop-color="#1c4d44" />
+              </linearGradient>
+              <linearGradient id="ribbonGold" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#fff0c0" />
+                <stop offset=".45" stop-color="#d8ae68" />
+                <stop offset="1" stop-color="#8e6637" />
+              </linearGradient>
+              <filter id="softGlow" x="-80%" y="-80%" width="260%" height="260%">
+                <feGaussianBlur stdDeviation="8" result="blur" />
+                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+              </filter>
+            </defs>
+
+            <g class="stems">
+              <path d="M319 540C300 410 244 310 176 205" />
+              <path d="M320 540C315 388 304 266 315 125" />
+              <path d="M321 540C348 401 398 292 476 195" />
+              <path d="M320 540C284 425 274 347 250 268" />
+              <path d="M323 540C357 431 367 344 390 258" />
+            </g>
+
+            <g class="leaves">
+              <path style="--i: 1" d="M289 420C235 386 210 404 206 447c40 13 68 0 83-27Z" />
+              <path style="--i: 2" d="M345 416c48-39 80-28 91 12-34 24-68 18-91-12Z" />
+              <path style="--i: 3" d="M278 360c-54-26-74-5-70 34 40 8 61-8 70-34Z" />
+              <path style="--i: 4" d="M362 355c49-28 75-10 75 27-37 12-61 0-75-27Z" />
+              <path style="--i: 5" d="M238 310c-45-22-65-4-61 30 34 7 53-7 61-30Z" />
+              <path style="--i: 6" d="M405 303c42-24 64-9 65 24-32 11-52 1-65-24Z" />
+              <path style="--i: 7" d="M305 310c-40-35-65-25-72 10 31 18 55 10 72-10Z" />
+              <path style="--i: 8" d="M338 282c35-38 62-31 72 3-28 21-53 17-72-3Z" />
+            </g>
+
+            <g class="flower flower--left" transform="translate(176 188) rotate(-24)" style="--delay: .15s">
+              <g class="flower__petals">
+                <ellipse transform="rotate(0) translate(0 -39)" rx="25" ry="48" fill="url(#petalPink)" />
+                <ellipse transform="rotate(60) translate(0 -39)" rx="25" ry="48" fill="url(#petalPink)" />
+                <ellipse transform="rotate(120) translate(0 -39)" rx="25" ry="48" fill="url(#petalPink)" />
+                <ellipse transform="rotate(180) translate(0 -39)" rx="25" ry="48" fill="url(#petalPink)" />
+                <ellipse transform="rotate(240) translate(0 -39)" rx="25" ry="48" fill="url(#petalPink)" />
+                <ellipse transform="rotate(300) translate(0 -39)" rx="25" ry="48" fill="url(#petalPink)" />
+              </g>
+              <circle class="flower__center" r="23" />
+            </g>
+
+            <g class="flower flower--top" transform="translate(316 120)" style="--delay: .45s">
+              <g class="flower__petals flower__petals--large">
+                <ellipse transform="rotate(0) translate(0 -45)" rx="29" ry="55" fill="url(#petalIvory)" />
+                <ellipse transform="rotate(60) translate(0 -45)" rx="29" ry="55" fill="url(#petalIvory)" />
+                <ellipse transform="rotate(120) translate(0 -45)" rx="29" ry="55" fill="url(#petalIvory)" />
+                <ellipse transform="rotate(180) translate(0 -45)" rx="29" ry="55" fill="url(#petalIvory)" />
+                <ellipse transform="rotate(240) translate(0 -45)" rx="29" ry="55" fill="url(#petalIvory)" />
+                <ellipse transform="rotate(300) translate(0 -45)" rx="29" ry="55" fill="url(#petalIvory)" />
+              </g>
+              <circle class="flower__center" r="26" />
+            </g>
+
+            <g class="flower flower--right" transform="translate(477 185) rotate(25)" style="--delay: .3s">
+              <g class="flower__petals">
+                <ellipse transform="rotate(0) translate(0 -39)" rx="25" ry="48" fill="url(#petalPeach)" />
+                <ellipse transform="rotate(60) translate(0 -39)" rx="25" ry="48" fill="url(#petalPeach)" />
+                <ellipse transform="rotate(120) translate(0 -39)" rx="25" ry="48" fill="url(#petalPeach)" />
+                <ellipse transform="rotate(180) translate(0 -39)" rx="25" ry="48" fill="url(#petalPeach)" />
+                <ellipse transform="rotate(240) translate(0 -39)" rx="25" ry="48" fill="url(#petalPeach)" />
+                <ellipse transform="rotate(300) translate(0 -39)" rx="25" ry="48" fill="url(#petalPeach)" />
+              </g>
+              <circle class="flower__center" r="23" />
+            </g>
+
+            <g class="flower flower--mid-left" transform="translate(252 260) rotate(-15)" style="--delay: .7s">
+              <g class="flower__petals flower__petals--small">
+                <ellipse transform="rotate(0) translate(0 -31)" rx="20" ry="38" fill="url(#petalPeach)" />
+                <ellipse transform="rotate(72) translate(0 -31)" rx="20" ry="38" fill="url(#petalPeach)" />
+                <ellipse transform="rotate(144) translate(0 -31)" rx="20" ry="38" fill="url(#petalPeach)" />
+                <ellipse transform="rotate(216) translate(0 -31)" rx="20" ry="38" fill="url(#petalPeach)" />
+                <ellipse transform="rotate(288) translate(0 -31)" rx="20" ry="38" fill="url(#petalPeach)" />
+              </g>
+              <circle class="flower__center" r="18" />
+            </g>
+
+            <g class="flower flower--mid-right" transform="translate(392 252) rotate(16)" style="--delay: .8s">
+              <g class="flower__petals flower__petals--small">
+                <ellipse transform="rotate(0) translate(0 -31)" rx="20" ry="38" fill="url(#petalPink)" />
+                <ellipse transform="rotate(72) translate(0 -31)" rx="20" ry="38" fill="url(#petalPink)" />
+                <ellipse transform="rotate(144) translate(0 -31)" rx="20" ry="38" fill="url(#petalPink)" />
+                <ellipse transform="rotate(216) translate(0 -31)" rx="20" ry="38" fill="url(#petalPink)" />
+                <ellipse transform="rotate(288) translate(0 -31)" rx="20" ry="38" fill="url(#petalPink)" />
+              </g>
+              <circle class="flower__center" r="18" />
+            </g>
+
+            <g class="sparkles" filter="url(#softGlow)">
+              <circle style="--i: 1" cx="108" cy="225" r="4" />
+              <circle style="--i: 2" cx="236" cy="100" r="3" />
+              <circle style="--i: 3" cx="410" cy="105" r="4" />
+              <circle style="--i: 4" cx="535" cy="240" r="3" />
+              <circle style="--i: 5" cx="172" cy="328" r="3" />
+              <circle style="--i: 6" cx="474" cy="337" r="4" />
+            </g>
+
+            <g class="ribbon">
+              <path d="M276 428c28 17 58 17 88 0l-5 49c-26 12-52 12-78 0Z" />
+              <path d="M284 450c-29 13-48 37-58 72 34-17 61-19 84-8Z" />
+              <path d="M355 450c30 12 51 36 62 70-35-15-63-17-85-5Z" />
+              <ellipse cx="320" cy="451" rx="34" ry="23" />
+            </g>
+          </svg>
+        </div>
+
+        <a class="scroll-cue" href="#letter" aria-label="Xem lời chúc">
+          <span>Xem lời chúc</span>
+          <i aria-hidden="true"></i>
+        </a>
+      </section>
+
+      <section class="letter-section" id="letter" aria-labelledby="letterTitle">
+        <div class="letter-card reveal-on-scroll">
+          <div class="letter-card__corner letter-card__corner--one" aria-hidden="true"></div>
+          <div class="letter-card__corner letter-card__corner--two" aria-hidden="true"></div>
+          <p class="letter-card__to">Gửi <span data-recipient>bạn</span>,</p>
+          <h2 id="letterTitle">Chúc <span data-recipient>bạn</span> một đời có hoa, có nắng và có thật nhiều ngày được là chính mình.</h2>
+          <div class="letter-card__body">
+            <p>
+              Mong <span data-recipient>bạn</span> luôn được lắng nghe, được trân trọng và được yêu thương theo cách thật xứng đáng.
+              Mọi nỗ lực thầm lặng đều có ý nghĩa, kể cả trong những ngày ta chưa kịp nhận ra.
+            </p>
+            <p>
+              Chúc cho nụ cười luôn ở lại, bình yên luôn tìm về, và mọi ước mơ được nâng niu sẽ từng bước hóa thành hiện thực —
+              không chỉ hôm nay, mà trong tất cả những ngày sau.
+            </p>
+          </div>
+          <p class="signature">Thương gửi,<strong data-sender>Một người luôn trân trọng bạn</strong></p>
+        </div>
+
+        <div class="actions reveal-on-scroll">
+          <button class="action-button action-button--primary" id="shareButton" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.6 10.5 6.8-4m-6.8 7 6.8 4" /></svg>
+            <span>Chia sẻ lời chúc</span>
+          </button>
+          <button class="action-button" id="replayButton" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8" /><path d="M3 3v5h5" /></svg>
+            <span>Thả một cơn mưa hoa</span>
+          </button>
+        </div>
+
+        <p class="closing reveal-on-scroll">20 · 10 <i></i> Vì <span data-recipient>bạn</span> luôn xứng đáng với những điều dịu dàng nhất.</p>
+      </section>
+    </main>
+
+    <dialog class="personalize-dialog" id="personalizeDialog">
+      <form id="personalizeForm" method="dialog">
+        <button class="dialog-close" id="dialogClose" type="button" aria-label="Đóng cửa sổ">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+        </button>
+        <p class="eyebrow">Dành riêng cho người đặc biệt</p>
+        <h2>Cá nhân hóa lời chúc</h2>
+        <p class="dialog-note">Tên sẽ được lưu ngay trong đường dẫn để bạn gửi đi thật dễ dàng.</p>
+        <label>
+          <span>Tên người nhận</span>
+          <input id="recipientInput" name="recipient" maxlength="36" autocomplete="off" placeholder="Ví dụ: Mẹ, Lan, các chị em..." />
+        </label>
+        <label>
+          <span>Tên người gửi</span>
+          <input id="senderInput" name="sender" maxlength="36" autocomplete="off" placeholder="Ví dụ: Minh" />
+        </label>
+        <button class="save-button" value="save" type="submit">Lưu lời chúc</button>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
