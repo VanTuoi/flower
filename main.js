@@ -17,6 +17,7 @@
     toolbar: document.querySelector(".toolbar"),
     openGift: document.querySelector("#openGift"),
     soundToggle: document.querySelector("#soundToggle"),
+    backgroundMusic: document.querySelector("#backgroundMusic"),
     personalizeButton: document.querySelector("#personalizeButton"),
     personalizeDialog: document.querySelector("#personalizeDialog"),
     dialogClose: document.querySelector("#dialogClose"),
@@ -34,7 +35,6 @@
 
   const state = {
     soundEnabled: true,
-    audioContext: null,
     recipient: defaults.recipient,
     sender: defaults.sender,
     toastTimer: 0,
@@ -97,41 +97,12 @@
     }, 2400);
   }
 
-  function getAudioContext() {
-    if (!state.audioContext) {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (AudioContext) state.audioContext = new AudioContext();
-    }
-    return state.audioContext;
-  }
-
-  function playChime() {
-    if (!state.soundEnabled) return;
-    const audio = getAudioContext();
-    if (!audio) return;
-
-    if (audio.state === "suspended") audio.resume();
-    const now = audio.currentTime;
-    const master = audio.createGain();
-    master.gain.setValueAtTime(0.0001, now);
-    master.gain.exponentialRampToValueAtTime(0.13, now + 0.05);
-    master.gain.exponentialRampToValueAtTime(0.0001, now + 2.9);
-    master.connect(audio.destination);
-
-    [523.25, 659.25, 783.99, 1046.5].forEach((frequency, index) => {
-      const oscillator = audio.createOscillator();
-      const gain = audio.createGain();
-      const start = now + index * 0.13;
-      oscillator.type = index % 2 ? "sine" : "triangle";
-      oscillator.frequency.setValueAtTime(frequency, start);
-      oscillator.detune.setValueAtTime(index * 2 - 3, start);
-      gain.gain.setValueAtTime(0.0001, start);
-      gain.gain.exponentialRampToValueAtTime(0.28 / (index + 1), start + 0.035);
-      gain.gain.exponentialRampToValueAtTime(0.0001, start + 1.65);
-      oscillator.connect(gain);
-      gain.connect(master);
-      oscillator.start(start);
-      oscillator.stop(start + 1.8);
+  function playBackgroundMusic() {
+    if (!state.soundEnabled || !elements.backgroundMusic) return;
+    elements.backgroundMusic.volume = 0.3;
+    const playback = elements.backgroundMusic.play();
+    playback?.catch(() => {
+      // Trình duyệt có thể chặn âm thanh nếu thao tác không bắt nguồn từ người dùng.
     });
   }
 
@@ -140,7 +111,8 @@
     body.classList.toggle("sound-muted", !enabled);
     elements.soundToggle.setAttribute("aria-pressed", String(enabled));
     elements.soundToggle.setAttribute("aria-label", enabled ? "Tắt âm thanh" : "Bật âm thanh");
-    if (enabled) playChime();
+    if (enabled) playBackgroundMusic();
+    else elements.backgroundMusic?.pause();
   }
 
   function setFinalBouquetState() {
@@ -398,7 +370,7 @@
     elements.intro.setAttribute("aria-hidden", "true");
     elements.mainContent.inert = false;
     elements.toolbar.inert = false;
-    playChime();
+    playBackgroundMusic();
     if (ENABLE_FLOWER_EFFECTS) {
       animateBouquet();
       petalField.start();
@@ -470,8 +442,13 @@
   }, { passive: true });
 
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) petalField.stop();
-    else if (ENABLE_FLOWER_EFFECTS && body.classList.contains("gift-open")) petalField.start();
+    if (document.hidden) {
+      petalField.stop();
+      elements.backgroundMusic?.pause();
+    } else if (body.classList.contains("gift-open")) {
+      if (ENABLE_FLOWER_EFFECTS) petalField.start();
+      playBackgroundMusic();
+    }
   });
 
   prefersReducedMotion.addEventListener?.("change", (event) => {
