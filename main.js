@@ -3,7 +3,6 @@
 
   const ENABLE_PERSONALIZATION = false;
   const ENABLE_FLOWER_EFFECTS = true;
-  const OPENED_SESSION_KEY = "womens-day-gift-opened";
 
   const root = document.documentElement;
   const body = document.body;
@@ -43,22 +42,6 @@
     toastTimer: 0,
     bloomTimeline: null,
   };
-
-  function rememberGiftOpened() {
-    try {
-      window.sessionStorage.setItem(OPENED_SESSION_KEY, "1");
-    } catch {
-      // Một số WebView riêng tư không cho phép dùng sessionStorage.
-    }
-  }
-
-  function wasGiftOpened() {
-    try {
-      return window.sessionStorage.getItem(OPENED_SESSION_KEY) === "1";
-    } catch {
-      return false;
-    }
-  }
 
   function cleanText(value, fallback) {
     const result = String(value || "").replace(/[<>]/g, "").replace(/\s+/g, " ").trim();
@@ -414,7 +397,6 @@
   function openGift() {
     if (body.classList.contains("gift-open")) return;
     body.classList.add("gift-open");
-    rememberGiftOpened();
     elements.intro.setAttribute("aria-hidden", "true");
     elements.mainContent.inert = false;
     elements.toolbar.inert = false;
@@ -440,18 +422,6 @@
       window.innerWidth < 640 ? 12 : 24,
     );
     showToast("Một cơn mưa hoa dành tặng bạn");
-  }
-
-  function restoreOpenedGift() {
-    body.classList.add("gift-open");
-    elements.intro.setAttribute("aria-hidden", "true");
-    elements.mainContent.inert = false;
-    elements.toolbar.inert = false;
-
-    if (ENABLE_FLOWER_EFFECTS) {
-      setFinalBouquetState();
-      petalField.start();
-    }
   }
 
   function legacyCopy(text) {
@@ -577,5 +547,4 @@
   }
   elements.mainContent.inert = true;
   elements.toolbar.inert = true;
-  if (wasGiftOpened()) restoreOpenedGift();
 })();
