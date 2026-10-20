@@ -549,6 +549,11 @@ main {
   transform-origin: center;
 }
 
+.flower-anchor {
+  transform-box: view-box;
+  transform-origin: 0 0;
+}
+
 .flower__petals {
   filter: drop-shadow(0 8px 10px rgba(20, 6, 12, 0.2));
 }
@@ -1027,6 +1032,16 @@ main {
   }
 }
 
+@media (hover: none) and (pointer: coarse) {
+  .flower {
+    scale: 1;
+  }
+
+  .gift-open .flower {
+    animation: flower-fade-in 850ms ease-out calc(0.55s + var(--delay)) both;
+  }
+}
+
 @media (max-width: 340px) {
   .date-mark {
     margin-bottom: 0.7rem;
@@ -1186,6 +1201,11 @@ main {
   0% { opacity: 0; scale: 0; }
   68% { opacity: 1; scale: 1.08; }
   100% { opacity: 1; scale: 1; }
+}
+
+@keyframes flower-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes flower-sway {

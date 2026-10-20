@@ -129,6 +129,7 @@
     }
 
     const gsap = window.gsap;
+    const mobile = window.innerWidth < 640 || window.matchMedia("(hover: none) and (pointer: coarse)").matches;
     if (state.bloomTimeline) state.bloomTimeline.kill();
     gsap.killTweensOf(".flower, .flower__petals, .sparkles circle, .leaves path, .stems path, .ribbon");
 
@@ -138,7 +139,7 @@
     timeline
       .set(".stems path", { strokeDashoffset: 700 })
       .set(".leaves path", { opacity: 0, scale: 0, rotation: -12, transformOrigin: "50% 100%" })
-      .set(".flower", { opacity: 0, scale: 0, transformOrigin: "50% 50%" })
+      .set(".flower", { opacity: 0, scale: mobile ? 1 : 0, transformOrigin: "50% 50%" })
       .set(".ribbon", { opacity: 0, scale: 0.65, transformOrigin: "50% 50%" })
       .set(".sparkles circle", { opacity: 0, scale: 0, transformOrigin: "50% 50%" })
       .to(".stems path", {
@@ -186,16 +187,15 @@
     }
 
     timeline.call(() => {
-      const mobile = window.innerWidth < 640;
-      gsap.to(".flower", {
-        rotation: (index) => (index % 2 ? (mobile ? 0.7 : 1.7) : (mobile ? -0.6 : -1.5)),
-        duration: (index) => (mobile ? 5.2 : 3.6) + index * 0.28,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-        transformOrigin: "50% 100%",
-      });
       if (!mobile) {
+        gsap.to(".flower", {
+          rotation: (index) => (index % 2 ? 1.7 : -1.5),
+          duration: (index) => 3.6 + index * 0.28,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+          transformOrigin: "50% 100%",
+        });
         gsap.to(".flower__petals", {
           scale: 1.018,
           duration: 2.6,
